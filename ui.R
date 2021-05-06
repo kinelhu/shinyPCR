@@ -30,7 +30,8 @@ ui <- fluidPage(id = "page",
                   bsButton("file_help", label = "", icon = icon("question"), style = "info", size = "extra-small"),
                   
                   bsTooltip(id = "file_help", 
-                            "Select multiple .xls files (directly exported from QuantStudio Flex) or a single .csv file with 3 columns, titled Sample Name, Target Name and Ct mean", 
+                            "Select one or multiple .xls files (directly exported from QuantStudio Flex)", 
+                            # or a single .csv file with 3 columns, titled Sample Name, Target Name and Ct mean", 
                             trigger = "hover")
                 ),
                 

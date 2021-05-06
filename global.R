@@ -46,26 +46,26 @@ userFileServer <- function(id) {
 
       # The user's data is parsed into a data frame
       dataframe <- reactive({
-        # Either a single CSV with three columns (prepared by the user)
-        if (any(userFile()$type == c("text/csv",
-                                 "text/comma-separated-values,text/plain",
-                                 ".csv"))) 
-          {
-          read_csv2(userFile()$datapath,
-                    col_types = c(col_character(),
-                                  col_character(),
-                                  col_number()))
-          }
-        
-        # Or one or multiple xls files (created by QuantStudio(TM) 6 Flex)
-        else 
-          {
+        # # Either a single CSV with three columns (prepared by the user)
+        # if (any(userFile()$type == c("text/csv",
+        #                          "text/comma-separated-values,text/plain",
+        #                          ".csv"))) 
+        #   {
+        #   read_csv2(userFile()$datapath,
+        #             col_types = c(col_character(),
+        #                           col_character(),
+        #                           col_number()))
+        #   }
+        # 
+        # # Or one or multiple xls files (created by QuantStudio(TM) 6 Flex)
+        # else 
+        #   {
           rbindlist(lapply(userFile()$datapath,read_excel, sheet = "Results", range = "A41:AE137"), fill = TRUE) %>%
             select(`Sample Name`, `Target Name`, `Ct Mean`) %>% 
             distinct() %>% 
             na.omit() %>% 
             arrange(`Sample Name`)
-            }
+            # }
       
       })
   
