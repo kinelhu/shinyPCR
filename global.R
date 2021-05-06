@@ -25,7 +25,9 @@ userFileUI <- function(id, label = "Upload dataset") {
             accept = c(
               "text/csv",
               "text/comma-separated-values,text/plain",
-              ".csv"))
+              ".csv", 
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", 	
+              "application/vnd.ms-excel"))
 }
 
 # Module server function
