@@ -63,7 +63,10 @@ ui <- fluidPage(id = "page",
                                           uiOutput(outputId = "num_groups")),
                          
                          # Input : if group analysis is chosen, define members of groups 
-                         uiOutput(outputId = "groups_members")
+                         uiOutput(outputId = "groups_members"),
+                         
+                         # Input : if group analysis is chosen, define labels of groups and draw means
+                         uiOutput(outputId = "label_groups")
                   ),
                   
                   column(width = 2,
@@ -110,9 +113,8 @@ ui <- fluidPage(id = "page",
                                     uiOutput("plot_dl"),
                                     plotOutput("plot_out", 
                                                width = "100%",
-                                               hover = hoverOpts("plot_hover", delay = 100, delayType = "debounce")),
-                                    # Input : if group analysis is chosen, define labels of groups and draw means
-                                    uiOutput(outputId = "label_groups")),
+                                               hover = hoverOpts("plot_hover", delay = 100, delayType = "debounce"))
+                                   ),
 
                            # DeltaCt +/- DeltaDeltaCt Data table
                            tabPanel("Data table", dataTableOutput("table_out"),

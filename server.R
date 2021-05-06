@@ -333,7 +333,8 @@ server <- function(input, output, session) {
     }
     
     pcr_plot <-  pcr_plot + theme_prism() + xlab(lx) + ylab(ly) +
-    facet_wrap(vars(as.factor(Gene)), scales = "free")
+    facet_wrap(vars(as.factor(Gene)), ncol = 2, scales = "free") +
+    theme(aspect.ratio = 1)
     
     
     return(pcr_plot)
@@ -343,7 +344,11 @@ server <- function(input, output, session) {
   # These functions output the data 
   output$table_out <- renderDataTable(dct())
   
-  output$plot_out <- renderPlot(pcr_plot())
+  output$plot_out <- renderPlot({pcr_plot()}, height = function(){
+    req(input$go)
+    isolate(400*ceiling(length(input$selected_genes)*0.5))
+    }
+    )
   
   output$groups_out <- renderDataTable(groups())
   
