@@ -141,7 +141,10 @@ server <- function(input, output, session) {
       paste(Sys.Date(), "_plot", '.png', sep='') 
     },
     content = function(file) {
-      ggsave(plot = pcr_plot(), device = "png", file)
+      ggsave(plot = pcr_plot(), 
+             device = "png", file, dpi = "retina", 
+             height = isolate(length(input$selected_genes)*5),
+             width = isolate(input$width_slider*7/50))
     }
   )
   
@@ -271,14 +274,14 @@ server <- function(input, output, session) {
             geom_point(data = d_means, 
                        aes(x = as.factor(Group), 
                            y = mDeltaDeltaCt_exp), 
-                       color = "gray", shape = 17, size = 2,
+                       color = "blue", shape = 17, size = 2,
                        show.legend = FALSE) +
             geom_errorbar(data = d_means, 
                           aes(x = as.factor(Group), 
                               y = mDeltaDeltaCt_exp, 
                               ymin = mDeltaDeltaCt_exp - sd, 
                               ymax = mDeltaDeltaCt_exp + sd),
-                          size = 0.3, color = "gray", width = 0.05)
+                          size = 0.3, color = "blue", width = 0.05)
         }
         
       }
@@ -308,14 +311,14 @@ server <- function(input, output, session) {
             geom_point(data = d_means,
                        aes(x = as.factor(Group),
                            y = mDeltaCt_exp),
-                       color = "gray", shape = 17, size = 2,
+                       color = "blue", shape = 17, size = 2,
                        show.legend = FALSE) +
             geom_errorbar(data = d_means, 
                           aes(x = as.factor(Group), 
                               y = mDeltaCt_exp, 
                               ymin = mDeltaCt_exp - sd, 
                               ymax = mDeltaCt_exp + sd),
-                          size = 0.3, color = "gray", width = 0.05)
+                          size = 0.3, color = "blue", width = 0.05)
         }
         
       }
@@ -333,8 +336,7 @@ server <- function(input, output, session) {
     }
     
     pcr_plot <-  pcr_plot + theme_prism() + xlab(lx) + ylab(ly) +
-    facet_wrap(vars(as.factor(Gene)), ncol = 2, scales = "free") +
-    theme(aspect.ratio = 1)
+    facet_wrap(vars(as.factor(Gene)), ncol = 1, scales = "free")
     
     
     return(pcr_plot)
@@ -344,11 +346,12 @@ server <- function(input, output, session) {
   # These functions output the data 
   output$table_out <- renderDataTable(dct())
   
-  output$plot_out <- renderPlot({pcr_plot()}, height = function(){
-    req(input$go)
-    isolate(400*ceiling(length(input$selected_genes)*0.5))
-    }
-    )
+  output$plot_out <- renderPlot({pcr_plot()}, 
+                                width = function() {10*input$width_slider},
+                                height = function(){
+                                  req(input$go)
+                                  isolate(500*length(input$selected_genes))})
+    
   
   output$groups_out <- renderDataTable(groups())
   
@@ -364,7 +367,7 @@ server <- function(input, output, session) {
     }
     
     paste0(
-      "Pointer coordinates: ", xy_str(input$plot_hover)
+      "Click coordinates: ", xy_str(input$plot_click)
     )
   })
   

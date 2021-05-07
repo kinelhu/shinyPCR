@@ -32,7 +32,7 @@ ui <- fluidPage(id = "page",
                   bsTooltip(id = "file_help", 
                             "Select one or multiple .xls files (directly exported from QuantStudio Flex)", 
                             # or a single .csv file with 3 columns, titled Sample Name, Target Name and Ct mean", 
-                            trigger = "hover")
+                            trigger = "click")
                 ),
                 
                 
@@ -76,6 +76,8 @@ ui <- fluidPage(id = "page",
                                       label = "Analysis", 
                                       choices = c("Delta Ct" = "delta1", "Delta Delta Ct" = "delta2")),
                          
+                         sliderInput("width_slider",label="Plot width",min=10,max=100,value=100, step=10, ticks=FALSE, post="%"),
+                         
                          # Should we use a logarithmic scale?
                          checkboxInput(inputId = "log_scale",
                                        label = "Log scale",
@@ -110,10 +112,10 @@ ui <- fluidPage(id = "page",
                            # Plot output
                            tabPanel("Plot", 
                                     verbatimTextOutput("info"),
+
                                     uiOutput("plot_dl"),
                                     plotOutput("plot_out", 
-                                               width = "100%",
-                                               hover = hoverOpts("plot_hover", delay = 100, delayType = "debounce"))
+                                               click = "plot_click")
                                    ),
 
                            # DeltaCt +/- DeltaDeltaCt Data table
